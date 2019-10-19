@@ -147,6 +147,14 @@ public class FlashCards {
         rightSwitch.update();
         backButton.update();
         saveButton.update();
+        
+        //update the coordinates of the card navigation buttons
+        leftSwitch.setX(MainPanel.width / 4 - (MainPanel.navbarHeight - 15) / 2);
+        leftSwitch.setY(MainPanel.height - (MainPanel.navbarHeight - 15) * 2);
+        rightSwitch.setX(MainPanel.width / 4 * 3 - (MainPanel.navbarHeight - 15) / 2);
+        rightSwitch.setY(MainPanel.height - (MainPanel.navbarHeight - 15) * 2);
+        flip.setX(MainPanel.width / 2 - (MainPanel.navbarHeight - 15) / 2);
+        flip.setY(MainPanel.height - (MainPanel.navbarHeight - 15) * 2);
     }
     
     public static void requestHighlight(int x, int y){

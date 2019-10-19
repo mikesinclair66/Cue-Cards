@@ -13,6 +13,11 @@ public class SaveButton extends Button {
     JFrame chooserFrame = new JFrame();
     JFileChooser fileChooser = new JFileChooser();
     
+    static Color successColor;
+    static int successCount = -1;
+    final static int OPACITY_START = 125;
+    static RGB rgb;
+    
     public SaveButton(int x, int y, int width, int height){
         super(x, y, width, height);
         an.setMsg("Save all");
@@ -27,6 +32,38 @@ public class SaveButton extends Button {
         comp.fillRect(x + 10, y + 5, width - 20, height / 4);
         comp.setColor(Color.white);
         comp.fillRect(x + 10, y + height / 2, width - 20, height / 2 - 5);
+        
+        if(successCount > -1){
+            comp.setColor(successColor);
+            comp.fillRoundRect(x + 5, y + 5, width - 10, height - 10, 5, 5);
+        }
+    }
+    
+    public static void displaySaveSuccess(){
+        successCount = 255;
+        rgb = new RGB(0, 255, 0);
+    }
+    
+    public static void displaySaveFailure(){
+        successCount = 255;
+        rgb = new RGB(255, 0, 0);
+    }
+    
+    @Override
+    public void update(){
+        super.update();
+        
+        //happens if displaySaveSuccess() was executed
+        if(successCount > -1){
+            if(successCount < OPACITY_START)
+                successColor = new Color(rgb.getR(), rgb.getG(), rgb.getB(), successCount);
+            else
+                successColor = new Color(rgb.getR(), rgb.getG(), rgb.getB(), OPACITY_START);
+            
+            successCount -= 5;
+            if(successCount <= 0)
+                successCount = -1;
+        }
     }
 
     @Override
@@ -65,5 +102,27 @@ public class SaveButton extends Button {
                 }
             }
         }
+    }
+}
+
+class RGB{
+    int r, g, b;
+    
+    public RGB(int r, int g, int b){
+        this.r = r;
+        this.g = g;
+        this.b = b;
+    }
+    
+    int getR(){
+        return r;
+    }
+    
+    int getG(){
+        return g;
+    }
+    
+    int getB(){
+        return b;
     }
 }

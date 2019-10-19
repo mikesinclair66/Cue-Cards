@@ -5,11 +5,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 import navigation.Directory;
+import navigation.SaveButton;
 import pages.FlashCards;
 import pages.Subject;
 
 public class Save {
-    public static String path = "C:\\Users\\Acer\\Documents\\NetBeansProjects\\Cue Cards\\save\\";
+    public static String path = "C:\\Users\\michael66\\Documents\\NetBeansProjects\\Cue Cards\\save\\";
     public static boolean pathSet;//if the save directory is already set by the user
     static File projNames;
     static File catFile;
@@ -47,7 +48,10 @@ public class Save {
         try{
             prop.store(outStream, "");
             outStream.close();
-        } catch(IOException e){ System.err.print("Could not save folderNames" + EX); }
+        } catch(IOException e){ 
+            System.err.print("Could not save folderNames" + EX);
+            SaveButton.displaySaveFailure();
+        }
         prop.clear();
         
         //save each category num with their folder num
@@ -55,8 +59,11 @@ public class Save {
             for(int cNo = 0; cNo < Subject.folders[fNo].packsNo; cNo++){
                 catFile = new File(path + "fo" + fNo + "ca" + cNo + EX);
                 try{ outStream = new FileOutputStream(catFile); }
-                catch(IOException e){ System.err.println("Could not save fo" + fNo + "ca"
-                + cNo + EX); }
+                catch(IOException e){
+                    System.err.println("Could not save fo" + fNo + "ca"
+                        + cNo + EX); 
+                    SaveButton.displaySaveFailure();
+                }
                 
                 boolean edited = Subject.folders[fNo].packs[cNo].edited;
                 prop.setProperty("edited", edited + "");
@@ -70,6 +77,7 @@ public class Save {
                     outStream.close();
                 } catch(IOException e){
                     System.err.println("Could not save fo" + fNo + "ca" + cNo + EX);
+                    SaveButton.displaySaveFailure();
                 }
                 prop.clear();
             }
@@ -82,6 +90,8 @@ public class Save {
                 catFile = new File(path + "fo" + fNo + "ca" + (++cNo) + EX);
             }
         }
+        
+        SaveButton.displaySaveSuccess();
     }
     
     private static void savePack(String frontSide[][], String backSide[][]){
